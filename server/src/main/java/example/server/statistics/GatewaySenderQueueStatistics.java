@@ -107,22 +107,22 @@ public class GatewaySenderQueueStatistics {
 		return currentTime;
   }
   
-  public void afterAcknowledgement(long transmitStartTime, long queueStartTime) {
+  public void afterAcknowledgement(long transmissionStartTime, long queueStartTime) {
     long currentTime = System.currentTimeMillis();
-    long transmitTime = currentTime - transmitStartTime;
+    long transmissionTime = currentTime - transmissionStartTime;
     long processTime = currentTime - queueStartTime;
 
     // Update acknowledged events
     this.stats.incLong(acknowledgedEventsId, 1);
 
     // Update transmission time statistics
-    this.stats.incLong(totalTransmissionTimeId, transmitTime);
+    this.stats.incLong(totalTransmissionTimeId, transmissionTime);
 		if (this.minimumTransmissionTimeNotSet.compareAndSet(false, true)
-      || this.stats.getLong(minimumTransmissionTimeId) > transmitTime) {
-			this.stats.setLong(minimumTransmissionTimeId, transmitTime);
+      || this.stats.getLong(minimumTransmissionTimeId) > transmissionTime) {
+			this.stats.setLong(minimumTransmissionTimeId, transmissionTime);
 		}
-		if (this.stats.getLong(maximumTransmissionTimeId) < transmitTime) {
-			this.stats.setLong(maximumTransmissionTimeId, transmitTime);
+		if (this.stats.getLong(maximumTransmissionTimeId) < transmissionTime) {
+			this.stats.setLong(maximumTransmissionTimeId, transmissionTime);
 		}
 
     // Update processing time statistics
